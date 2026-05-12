@@ -1,0 +1,154 @@
+/* ── Design tokens — direct from cc-webui design system ──────────────────── */
+:root {
+  /* Warm paper palette — light */
+  --bg:             #F1ECDF;
+  --surface:        #FBF8F1;
+  --surface-2:      #FFFFFF;
+  --surface-sunken: #ECE5D2;
+  --ink:            #1F1E1B;
+  --ink-2:          #4A4842;
+  --muted:          #8A8578;
+  --line:           #E1D8C2;
+  --line-2:         #CFC4A8;
+
+  /* Accent colours */
+  --rust:        #C96442;
+  --rust-soft:   #E89677;
+  --rust-tint:   #F4DCD0;
+  --green:       #5C7C4F;
+  --green-tint:  #DDE6CF;
+  --amber:       #B0822E;
+  --amber-tint:  #F1E3BD;
+  --rose:        #A8493A;
+  --rose-tint:   #EBD2CB;
+  --blue:        #406E8E;
+  --blue-tint:   #D6E2EA;
+
+  /* Elevation */
+  --shadow-1: 0 1px 0 rgba(31,30,27,.04), 0 1px 2px rgba(31,30,27,.06);
+  --shadow-2: 0 1px 0 rgba(31,30,27,.05), 0 8px 24px -8px rgba(31,30,27,.18);
+  --shadow-3: 0 2px 0 rgba(31,30,27,.05), 0 24px 60px -16px rgba(31,30,27,.32);
+
+  /* Radii */
+  --r-sm: 4px;
+  --r:    8px;
+  --r-lg: 12px;
+  --r-xl: 16px;
+
+  /* Typography */
+  --serif: 'Source Serif 4', 'Source Serif Pro', Georgia, serif;
+  --sans:  'Geist', 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --mono:  'Geist Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+[data-theme="dark"] {
+  --bg:             #16130F;
+  --surface:        #1E1A14;
+  --surface-2:      #25201A;
+  --surface-sunken: #110E0A;
+  --ink:            #EDE6D6;
+  --ink-2:          #B8B0A0;
+  --muted:          #7F7867;
+  --line:           #2E2820;
+  --line-2:         #3D362C;
+  --rust:           #E08968;
+  --rust-soft:      #C96442;
+  --rust-tint:      #3A2419;
+  --green:          #8FAE7E;
+  --green-tint:     #2A331F;
+  --amber:          #D8AE5E;
+  --amber-tint:     #382C16;
+  --rose:           #D08070;
+  --rose-tint:      #3A201C;
+  --blue:           #7AA7C4;
+  --blue-tint:      #1C2A33;
+}
+
+/* ── Resets ──────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body, #root {
+  margin: 0; padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ── Type helpers ────────────────────────────────────────────────────────── */
+.t-serif  { font-family: var(--serif); letter-spacing: -0.01em; }
+.t-mono   { font-family: var(--mono); }
+.t-label  { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.t-meta   { font-size: 12px; color: var(--muted); }
+.t-body   { font-size: 14px; line-height: 1.55; }
+.t-display{ font-family: var(--serif); font-size: 28px; line-height: 1.15; font-weight: 400; letter-spacing: -0.015em; }
+.t-h1     { font-family: var(--serif); font-size: 22px; line-height: 1.2;  font-weight: 400; letter-spacing: -0.01em; }
+.t-h2     { font-family: var(--serif); font-size: 17px; line-height: 1.25; font-weight: 500; }
+
+/* ── Divider ─────────────────────────────────────────────────────────────── */
+.divider { height: 1px; background: var(--line); }
+
+/* ── kbd ─────────────────────────────────────────────────────────────────── */
+.kbd {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; height: 18px; padding: 0 4px;
+  border: 1px solid var(--line); border-bottom-width: 2px;
+  border-radius: 4px; background: var(--surface-2);
+  font-family: var(--mono); font-size: 10.5px; color: var(--ink-2);
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────── */
+button.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 30px; padding: 0 12px; border-radius: 6px;
+  border: 1px solid var(--line); background: var(--surface-2);
+  color: var(--ink); font: 500 13px/1 var(--sans); cursor: pointer;
+  transition: background .12s, border-color .12s, transform .04s;
+  white-space: nowrap;
+}
+button.btn:hover  { background: var(--surface-sunken); border-color: var(--line-2); }
+button.btn:active { transform: translateY(0.5px); }
+
+button.btn.primary { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+button.btn.primary:hover { background: var(--ink-2); }
+
+button.btn.accent { background: var(--rust); color: #fff; border-color: var(--rust); }
+button.btn.accent:hover { background: var(--rose); }
+
+button.btn.ghost { background: transparent; border-color: transparent; }
+button.btn.ghost:hover { background: var(--surface-sunken); }
+
+button.btn.sm { height: 24px; padding: 0 8px; font-size: 12px; border-radius: 5px; }
+
+/* ── Paper texture ───────────────────────────────────────────────────────── */
+.paper {
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(201,100,66,.04), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, rgba(64,110,142,.03), transparent 60%),
+    var(--surface);
+}
+
+/* ── Animations ──────────────────────────────────────────────────────────── */
+@keyframes cc-pulse {
+  0%, 100% { opacity: 0.25; transform: translateY(0); }
+  50%       { opacity: 1;   transform: translateY(-1px); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── Scrollbars ──────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }

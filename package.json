@@ -1,0 +1,16 @@
+{
+  "name": "cc-webui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20", "pnpm": ">=9" },
+  "scripts": {
+    "dev": "concurrently -n daemon,web -c cyan,magenta \"pnpm --filter @cc-webui/daemon dev\" \"pnpm --filter @cc-webui/web dev\"",
+    "build": "pnpm --filter @cc-webui/contracts build && pnpm --filter @cc-webui/daemon build && pnpm --filter @cc-webui/web build",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "typescript": "^5.7.0"
+  }
+}
