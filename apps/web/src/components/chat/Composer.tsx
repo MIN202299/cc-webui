@@ -1,4 +1,5 @@
 import { useState, useRef, type KeyboardEvent } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { Pill } from '../atoms/Pill.js';
 import { ArrowUpIcon, PauseIcon, ShieldIcon, BoltIcon } from '../atoms/icons.js';
 import { useStore } from '../../store/index.js';
@@ -8,11 +9,11 @@ export function Composer() {
   const [value, setValue] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const { activeSessionId, addOptimisticMessage, loadMessages } = useStore(s => ({
+  const { activeSessionId, addOptimisticMessage, loadMessages } = useStore(useShallow(s => ({
     activeSessionId: s.activeSessionId,
     addOptimisticMessage: s.addOptimisticMessage,
     loadMessages: s.loadMessages,
-  }));
+  })));
 
   const isRunning = useStore(s => {
     const sid = s.activeSessionId;

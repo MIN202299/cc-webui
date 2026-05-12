@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { Composer } from '../chat/Composer.js';
 import { Message } from '../chat/Message.js';
 import { Pill } from '../atoms/Pill.js';
@@ -7,11 +8,11 @@ import { useStore } from '../../store/index.js';
 import { useRunStream } from '../../hooks/useRunStream.js';
 
 export function ChatMain() {
-  const { activeSessionId, sessions, messages } = useStore(s => ({
+  const { activeSessionId, sessions, messages } = useStore(useShallow(s => ({
     activeSessionId: s.activeSessionId,
     sessions: s.sessions,
     messages: s.messages,
-  }));
+  })));
 
   const session = sessions.find(s => s.id === activeSessionId);
   const msgs = activeSessionId ? (messages[activeSessionId] ?? []) : [];

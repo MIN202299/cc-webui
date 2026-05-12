@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { Avatar } from '../atoms/Avatar.js';
 import { Pill } from '../atoms/Pill.js';
 import { PlusIcon, SearchIcon, GearIcon, ChevUDIcon, FolderOpenIcon } from '../atoms/icons.js';
@@ -7,13 +8,13 @@ import { api } from '../../api/client.js';
 import type { Session } from '@cc-webui/contracts';
 
 export function Sidebar() {
-  const { sessions, activeSessionId, setActiveSession, loadSessions, openSettings } = useStore(s => ({
+  const { sessions, activeSessionId, setActiveSession, loadSessions, openSettings } = useStore(useShallow(s => ({
     sessions: s.sessions,
     activeSessionId: s.activeSessionId,
     setActiveSession: s.setActiveSession,
     loadSessions: s.loadSessions,
     openSettings: s.openSettings,
-  }));
+  })));
 
   const [cwd, setCwd] = useState('');
   const [creating, setCreating] = useState(false);

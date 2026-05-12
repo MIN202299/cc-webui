@@ -1,15 +1,14 @@
+import { useShallow } from 'zustand/react/shallow';
 import { Avatar } from '../atoms/Avatar.js';
 import { Pill } from '../atoms/Pill.js';
 import { FolderOpenIcon, BranchIcon, FireIcon, BellIcon, MoonIcon, SunIcon, GearIcon } from '../atoms/icons.js';
 import { useStore } from '../../store/index.js';
 
 export function TopBar() {
-  const { theme, toggleTheme, activeSession, openSettings } = useStore(s => ({
-    theme: s.theme,
-    toggleTheme: s.toggleTheme,
-    activeSession: s.sessions.find(s2 => s2.id === s.activeSessionId),
-    openSettings: s.openSettings,
-  }));
+  const theme = useStore(s => s.theme);
+  const toggleTheme = useStore(s => s.toggleTheme);
+  const openSettings = useStore(s => s.openSettings);
+  const activeSession = useStore(s => s.sessions.find(s2 => s2.id === s.activeSessionId));
 
   const totalCost = useStore(s => {
     const msgs = s.activeSessionId ? (s.messages[s.activeSessionId] ?? []) : [];

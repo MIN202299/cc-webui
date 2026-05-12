@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { TopBar } from './components/layout/TopBar.js';
 import { Sidebar } from './components/layout/Sidebar.js';
 import { ChatMain } from './components/layout/ChatMain.js';
@@ -9,12 +10,12 @@ import { CommandPalette } from './components/dialogs/CommandPalette.js';
 import { useStore } from './store/index.js';
 
 export function App() {
-  const { loadSessions, theme, inspectorVisible, openPalette } = useStore(s => ({
+  const { loadSessions, theme, inspectorVisible, openPalette } = useStore(useShallow(s => ({
     loadSessions: s.loadSessions,
     theme: s.theme,
     inspectorVisible: s.inspectorVisible,
     openPalette: s.openPalette,
-  }));
+  })));
 
   // Bootstrap
   useEffect(() => {

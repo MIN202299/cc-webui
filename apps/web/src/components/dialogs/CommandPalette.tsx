@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { SearchIcon, PlusIcon, GearIcon, MoonIcon, SunIcon } from '../atoms/icons.js';
 import { useStore } from '../../store/index.js';
 import { api } from '../../api/client.js';
-import os from 'os';
 
 interface Command { id: string; label: string; hint?: string; action: () => void; }
 
 export function CommandPalette() {
-  const { open, close, theme, toggleTheme, openSettings, loadSessions, setActiveSession } = useStore(s => ({
+  const { open, close, theme, toggleTheme, openSettings, loadSessions, setActiveSession } = useStore(useShallow(s => ({
     open: s.paletteOpen,
     close: s.closePalette,
     theme: s.theme,
@@ -15,7 +15,7 @@ export function CommandPalette() {
     openSettings: s.openSettings,
     loadSessions: s.loadSessions,
     setActiveSession: s.setActiveSession,
-  }));
+  })));
 
   const [query, setQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);

@@ -1,20 +1,17 @@
 import { useEffect, useRef } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '../store/index.js';
 import type { AgentPayload } from '@cc-webui/contracts';
 
-/**
- * Opens an SSE connection to /api/runs/:id/events and dispatches
- * incoming agent events into the store.
- */
 export function useRunStream(runId: string | null) {
   const esRef = useRef<EventSource | null>(null);
   const sessionId = useStore(s => s.activeSessionId);
-  const { appendEventToLastAssistant, updateLastAssistantStatus, loadMessages, setPendingPermission } = useStore(s => ({
+  const { appendEventToLastAssistant, updateLastAssistantStatus, loadMessages, setPendingPermission } = useStore(useShallow(s => ({
     appendEventToLastAssistant: s.appendEventToLastAssistant,
     updateLastAssistantStatus: s.updateLastAssistantStatus,
     loadMessages: s.loadMessages,
     setPendingPermission: s.setPendingPermission,
-  }));
+  })));
 
   useEffect(() => {
     if (!runId || !sessionId) return;

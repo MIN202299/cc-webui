@@ -1,12 +1,13 @@
+import { useShallow } from 'zustand/react/shallow';
 import { ShieldIcon, XIcon } from '../atoms/icons.js';
 import { api } from '../../api/client.js';
 import { useStore } from '../../store/index.js';
 
 export function PermissionDialog() {
-  const { permission, clearPermission } = useStore(s => ({
+  const { permission, clearPermission } = useStore(useShallow(s => ({
     permission: s.pendingPermission,
     clearPermission: s.clearPermission,
-  }));
+  })));
 
   if (!permission) return null;
 

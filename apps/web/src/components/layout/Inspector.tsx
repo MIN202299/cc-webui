@@ -1,3 +1,4 @@
+import { useShallow } from 'zustand/react/shallow';
 import { FolderIcon, DiffIcon, TerminalIcon, TodoIcon, PanelRightIcon } from '../atoms/icons.js';
 import { Pill } from '../atoms/Pill.js';
 import { FileTreeNode } from '../atoms/FileTreeNode.js';
@@ -15,11 +16,11 @@ const TABS: { id: Tab; icon: React.ComponentType<{ size?: number }>; label: stri
 ];
 
 export function Inspector() {
-  const { tab, setTab, hideInspector } = useStore(s => ({
+  const { tab, setTab, hideInspector } = useStore(useShallow(s => ({
     tab: s.inspectorTab,
     setTab: s.setInspectorTab,
     hideInspector: s.hideInspector,
-  }));
+  })));
 
   const events = useStore(s => {
     const sid = s.activeSessionId;

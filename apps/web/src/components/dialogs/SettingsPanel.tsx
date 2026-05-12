@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { XIcon } from '../atoms/icons.js';
 import { api } from '../../api/client.js';
 import { useStore } from '../../store/index.js';
@@ -7,10 +8,10 @@ import type { Settings } from '@cc-webui/contracts';
 const TABS = ['General', 'Model', 'Permissions', 'MCP', 'About'];
 
 export function SettingsPanel() {
-  const { open, closeSettings } = useStore(s => ({
+  const { open, closeSettings } = useStore(useShallow(s => ({
     open: s.settingsOpen,
     closeSettings: s.closeSettings,
-  }));
+  })));
 
   const [tab, setTab] = useState('General');
   const [settings, setSettings] = useState<Settings | null>(null);
