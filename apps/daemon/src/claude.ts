@@ -50,9 +50,12 @@ export function spawnClaude(opts: ClaudeRunOptions): {
 }
 
 async function* parseStream(child: ChildProcess): AsyncGenerator<ClaudeEvent> {
+  // Capture stderr so we can surface it on failure
+  let stderrBuf = '';
+  child.stderr?.on('data', (d: Buffer) => { stderrBuf += d.toString(); });
+
   const rl = readline.createInterface({ input: child.stdout!, crlfDelay: Infinity });
 
-  // Buffer lines and resolve when new data arrives
   const queue: string[] = [];
   let notify: (() => void) | null = null;
   let closed = false;
@@ -77,8 +80,13 @@ async function* parseStream(child: ChildProcess): AsyncGenerator<ClaudeEvent> {
 
   const exitCode = await new Promise<number | null>(r => {
     if (child.exitCode !== null) { r(child.exitCode); return; }
-    child.on('exit', r);
+    child.on('exit', (code) => r(code));
   });
+
+  if (exitCode !== 0 && stderrBuf.trim()) {
+    yield { type: 'error', message: stderrBuf.trim() };
+  }
+
   yield { type: 'done', exitCode };
 }
 

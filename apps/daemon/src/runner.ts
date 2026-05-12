@@ -42,6 +42,7 @@ export async function startRun(session: SessionRow, prompt: string, run: Run): P
   const persisted: unknown[] = [];
   let newClaudeSessionId: string | null = null;
   let totalCost = 0;
+  let finalExitCode: number | null = null;
 
   try {
     for await (const ev of events) {
@@ -78,11 +79,14 @@ export async function startRun(session: SessionRow, prompt: string, run: Run): P
           break;
 
         case 'done':
+          finalExitCode = ev.exitCode;
           break;
       }
     }
 
-    const status = run.cancelRequested ? 'canceled' : 'succeeded';
+    const status = run.cancelRequested ? 'canceled'
+      : finalExitCode === 0 ? 'succeeded'
+      : 'failed';
 
     db.prepare(`UPDATE messages SET run_status = ?, events_json = ?, ended_at = ? WHERE id = ?`)
       .run(status, JSON.stringify(persisted), Date.now(), run.messageId);
@@ -95,7 +99,7 @@ export async function startRun(session: SessionRow, prompt: string, run: Run): P
     db.prepare(`UPDATE sessions SET updated_at = ? WHERE id = ?`)
       .run(Date.now(), session.id);
 
-    finish(run, status, child.exitCode);
+    finish(run, status, finalExitCode);
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
     db.prepare(`UPDATE messages SET run_status = 'failed', ended_at = ? WHERE id = ?`)
