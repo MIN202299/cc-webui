@@ -64,8 +64,15 @@ export function useRunStream(runId: string | null) {
       setTimeout(() => loadMessages(sessionId), 500);
     });
 
-    es.addEventListener('error', () => {
-      es.close();
+    // Named 'error' SSE event from daemon (has e.data); plain EventSource
+    // network errors also fire here but have no data.
+    es.addEventListener('error', (e: MessageEvent) => {
+      if (e.data) {
+        const data = JSON.parse(e.data) as { message: string };
+        appendEventToLastAssistant(sessionId, { kind: 'status', label: `Error: ${data.message}` });
+      } else {
+        es.close();
+      }
     });
 
     return () => { es.close(); esRef.current = null; };
