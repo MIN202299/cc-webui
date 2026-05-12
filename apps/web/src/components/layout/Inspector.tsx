@@ -22,12 +22,12 @@ export function Inspector() {
     hideInspector: s.hideInspector,
   })));
 
-  const events = useStore(s => {
+  const events = useStore(useShallow(s => {
     const sid = s.activeSessionId;
     if (!sid) return [] as PersistedEvent[];
     const msgs = s.messages[sid] ?? [];
     return msgs.flatMap(m => m.events);
-  });
+  }));
 
   return (
     <aside style={{
