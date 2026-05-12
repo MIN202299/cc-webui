@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "concurrently -n daemon,web -c cyan,magenta \"pnpm --filter @cc-webui/daemon dev\" \"pnpm --filter @cc-webui/web dev\"",
     "build": "pnpm --filter @cc-webui/contracts build && pnpm --filter @cc-webui/daemon build && pnpm --filter @cc-webui/web build",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "setup": "pnpm rebuild better-sqlite3"
   },
   "devDependencies": {
     "concurrently": "^9.1.0",

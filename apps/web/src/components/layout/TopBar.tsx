@@ -40,7 +40,7 @@ export function TopBar() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <FolderOpenIcon size={13} style={{ color: 'var(--muted)' }} />
             <span className="t-mono" style={{ fontSize: 12, color: 'var(--ink-2)' }}>
-              {activeSession.cwd.replace(process?.env?.HOME ?? '', '~')}
+              {activeSession.cwd.replace(/^\/Users\/[^/]+|^\/home\/[^/]+/, '~')}
             </span>
           </div>
           <Pill tone="ghost" sm>
