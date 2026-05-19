@@ -38,13 +38,15 @@ export function spawnClaude(opts: ClaudeRunOptions): {
     args.push('--allowedTools', opts.allowedTools.join(','));
   }
 
-  args.push(opts.prompt);
-
   const child = spawn('claude', args, {
     cwd: opts.cwd,
-    stdio: ['ignore', 'pipe', 'pipe'],
+    stdio: ['pipe', 'pipe', 'pipe'],
     env: { ...process.env },
   });
+
+  // Write prompt via stdin and close it so the CLI sees EOF
+  child.stdin!.write(opts.prompt, 'utf8');
+  child.stdin!.end();
 
   return { child, events: parseStream(child) };
 }

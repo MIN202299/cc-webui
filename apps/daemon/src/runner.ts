@@ -20,6 +20,7 @@ export async function startRun(session: SessionRow, prompt: string, run: Run): P
   run.status = 'running';
   db.prepare(`UPDATE messages SET run_status = 'running' WHERE id = ?`).run(run.messageId);
 
+  console.log(`[stream] run=${run.id} started at ${Date.now()}`);
   emit(run, 'start', {
     runId: run.id,
     sessionId: run.sessionId,
@@ -54,6 +55,7 @@ export async function startRun(session: SessionRow, prompt: string, run: Run): P
           break;
 
         case 'text':
+          console.log(`[stream] text chunk at ${Date.now()} len=${ev.text.length} preview=${JSON.stringify(ev.text.slice(0, 40))}`);
           emit(run, 'agent', { type: 'text_delta', delta: ev.text });
           persisted.push({ kind: 'text', text: ev.text });
           break;

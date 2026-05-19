@@ -4,9 +4,15 @@ import path from 'path';
 
 const router = Router();
 
+function expandHome(p: string): string {
+  if (p === '~' || p.startsWith('~/')) return p.replace('~', process.env.HOME ?? '/');
+  return p;
+}
+
 // List directory
 router.get('/', (req, res) => {
-  const dir = (req.query['path'] as string) || process.env.HOME || '/';
+  const raw = (req.query['path'] as string) || '~';
+  const dir = expandHome(raw);
   try {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
     const result = entries

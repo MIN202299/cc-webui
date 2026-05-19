@@ -24,6 +24,7 @@ export function useRunStream(runId: string | null) {
 
     es.addEventListener('agent', (e: MessageEvent) => {
       const payload = JSON.parse(e.data) as AgentPayload;
+      console.log(`[sse] agent event at ${Date.now()} type=${payload.type}`, payload.type === 'text_delta' ? `len=${(payload as { delta: string }).delta?.length}` : '');
 
       switch (payload.type) {
         case 'text_delta':

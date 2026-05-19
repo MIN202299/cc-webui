@@ -5,6 +5,7 @@ import { Pill } from '../atoms/Pill.js';
 import { PlusIcon, SearchIcon, GearIcon, ChevUDIcon, FolderOpenIcon } from '../atoms/icons.js';
 import { useStore } from '../../store/index.js';
 import { api } from '../../api/client.js';
+import { DirectoryPickerDialog } from '../dialogs/DirectoryPickerDialog.js';
 import type { Session } from '@cc-webui/contracts';
 
 export function Sidebar() {
@@ -16,13 +17,14 @@ export function Sidebar() {
     openSettings: s.openSettings,
   })));
 
-  const [cwd, setCwd] = useState('');
-  const [creating, setCreating] = useState(false);
+  const [showDirPicker, setShowDirPicker] = useState(false);
 
-  async function handleNewSession() {
-    const dir = prompt('Working directory:', '~');
-    if (!dir) return;
-    const resolved = dir.replace('~', window.location.hostname === 'localhost' ? '' : '~');
+  function handleNewSession() {
+    setShowDirPicker(true);
+  }
+
+  async function handleDirConfirm(dir: string) {
+    setShowDirPicker(false);
     await api.createSession({ cwd: dir === '~' ? (import.meta.env.VITE_DEFAULT_CWD ?? '/') : dir });
     await loadSessions();
   }
@@ -107,6 +109,13 @@ export function Sidebar() {
         </div>
         <button className="btn ghost sm" onClick={openSettings}><GearIcon size={13} /></button>
       </div>
+
+      {showDirPicker && (
+        <DirectoryPickerDialog
+          onConfirm={handleDirConfirm}
+          onCancel={() => setShowDirPicker(false)}
+        />
+      )}
     </aside>
   );
 }

@@ -17,6 +17,7 @@ export interface Run {
   events: StoredEvent[];
   nextEventId: number;
   clients: Set<Response>;
+  permissionResolve?: (decision: 'allow' | 'deny' | 'allow_always') => void;
 }
 
 const store = new Map<string, Run>();

@@ -38,6 +38,23 @@ export function Message({ message }: Props) {
         {displayText && (
           <div className="t-body" style={{ color: isUser ? 'var(--ink)' : 'var(--ink-2)', maxWidth: 720, marginBottom: toolUseEvents.length > 0 ? 10 : 0 }}>
             {displayText}
+            {!isUser && message.runStatus === 'running' && (
+              <span style={{
+                display: 'inline-block', width: 2, height: '1em',
+                background: 'var(--rust)', marginLeft: 1, verticalAlign: 'text-bottom',
+                animation: 'blink .9s step-end infinite',
+              }} />
+            )}
+          </div>
+        )}
+        {/* Waiting for first token */}
+        {!isUser && !displayText && message.runStatus === 'running' && (
+          <div className="t-body" style={{ color: 'var(--muted)' }}>
+            <span style={{
+              display: 'inline-block', width: 2, height: '1em',
+              background: 'var(--rust)', verticalAlign: 'text-bottom',
+              animation: 'blink .9s step-end infinite',
+            }} />
           </div>
         )}
 

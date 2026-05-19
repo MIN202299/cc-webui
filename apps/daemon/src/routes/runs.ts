@@ -52,4 +52,16 @@ router.post('/:id/cancel', (req, res) => {
   res.json({ ok: true });
 });
 
+// Permission decision (allow / deny / allow_always)
+router.post('/:id/permission', (req, res) => {
+  const run = getRun(req.params.id);
+  if (!run) return void res.status(404).json({ error: 'Run not found' });
+  const { decision } = req.body as { decision?: string };
+  if (!decision) return void res.status(400).json({ error: 'decision is required' });
+  console.log(`[permission] run=${run.id} decision=${decision}`);
+  // With --print mode the CLI is already running; signal via the pending resolver if present
+  run.permissionResolve?.(decision as 'allow' | 'deny' | 'allow_always');
+  res.json({ ok: true });
+});
+
 export default router;
